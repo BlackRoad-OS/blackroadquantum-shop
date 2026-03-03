@@ -62,7 +62,11 @@ jobs:
       - name: Build
         run: npm run build
         env:
-          NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
+          NEXT_PUBLIC_BASE_URL: ${{ secrets.NEXT_PUBLIC_BASE_URL }}
+          NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY }}
+          NEXT_PUBLIC_STRIPE_PRICE_DEV_KIT: ${{ secrets.NEXT_PUBLIC_STRIPE_PRICE_DEV_KIT }}
+          NEXT_PUBLIC_STRIPE_PRICE_OS_PRO: ${{ secrets.NEXT_PUBLIC_STRIPE_PRICE_OS_PRO }}
+          NEXT_PUBLIC_STRIPE_PRICE_COURSE: ${{ secrets.NEXT_PUBLIC_STRIPE_PRICE_COURSE }}
       
       - name: Deploy to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
