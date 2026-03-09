@@ -1,3 +1,41 @@
+// © 2026 BlackRoad OS, Inc. — Proprietary. All rights reserved.
+'use client'
+
+const PRODUCTS = [
+  {
+    name: 'BlackRoad Quantum Dev Kit',
+    description: 'Complete hardware and software starter pack for quantum algorithm development.',
+    price: '$499',
+    priceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_DEV_KIT ?? 'price_dev_kit',
+  },
+  {
+    name: 'Quantum OS Pro License',
+    description: 'Full BlackRoad OS Pro license with priority support and early access to new builds.',
+    price: '$299/yr',
+    priceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_OS_PRO ?? 'price_os_pro',
+  },
+  {
+    name: 'Quantum Computing Course Bundle',
+    description: 'Comprehensive video course series covering quantum gates, circuits, and algorithms.',
+    price: '$149',
+    priceId: process.env.NEXT_PUBLIC_STRIPE_PRICE_COURSE ?? 'price_course',
+  },
+]
+
+async function handleBuy(priceId: string) {
+  const res = await fetch('/api/checkout', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ priceId }),
+  })
+  const data = await res.json()
+  if (data.url) {
+    window.location.href = data.url
+  } else {
+    alert(data.error ?? 'Checkout failed. Please try again.')
+  }
+}
+
 export default function Home() {
   return (
     <>
@@ -87,6 +125,64 @@ export default function Home() {
         }}>
           Hardware and software for quantum computing enthusiasts and professionals.
         </p>
+
+        {/* Products */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+          gap: '1px',
+          background: '#2a2a2a',
+          width: '100%',
+          maxWidth: '900px',
+          marginBottom: '55px',
+        }}>
+          {PRODUCTS.map((product) => (
+            <div key={product.priceId} style={{
+              background: '#111',
+              padding: '34px',
+              textAlign: 'left',
+              display: 'flex',
+              flexDirection: 'column',
+              gap: '13px',
+            }}>
+              <div style={{
+                fontFamily: 'SF Mono, monospace',
+                fontSize: '13px',
+                fontWeight: 600,
+                color: '#fff',
+              }}>{product.name}</div>
+              <div style={{
+                fontFamily: '-apple-system, sans-serif',
+                fontSize: '13px',
+                color: '#777',
+                lineHeight: 1.618,
+                flex: 1,
+              }}>{product.description}</div>
+              <div style={{
+                fontFamily: 'SF Mono, monospace',
+                fontSize: '18px',
+                fontWeight: 700,
+                color: '#F5A623',
+              }}>{product.price}</div>
+              <button
+                onClick={() => handleBuy(product.priceId)}
+                style={{
+                  fontFamily: 'SF Mono, monospace',
+                  fontSize: '12px',
+                  padding: '10px 21px',
+                  borderRadius: '5px',
+                  border: 'none',
+                  cursor: 'pointer',
+                  fontWeight: 600,
+                  background: '#fff',
+                  color: '#000',
+                }}
+              >
+                Buy Now
+              </button>
+            </div>
+          ))}
+        </div>
 
         <div style={{ display: 'flex', gap: '13px' }}>
           <a href="https://blackroad.io" style={{
