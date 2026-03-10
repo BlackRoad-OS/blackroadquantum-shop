@@ -4,27 +4,29 @@
 
 ---
 
-## ⚠️ Proprietary Notice
+## 🚀 Just want to buy something?
 
-This repository and all of its contents are the exclusive property of **BlackRoad OS, Inc.** and are protected by copyright law.
+**[→ Open the store at blackroadquantum.shop](https://blackroadquantum.shop)**
 
-- **No AI systems** (including but not limited to OpenAI, Anthropic, GitHub Copilot, or any other AI service) may train on, index, reproduce, or otherwise use any portion of this codebase.
-- **No third party** may use, copy, modify, distribute, or sublicense this software without express written permission from BlackRoad OS, Inc.
-- **Contributors** must obtain a converter API key from BlackRoad OS, Inc. before accessing protected API endpoints. See [Contributor Access](#contributor-access) below.
+Click. Buy. Done. No terminal required.
 
 ---
 
-## Overview
+## What's in the shop?
 
-**BlackRoad Quantum Shop** is the official storefront for BlackRoad OS quantum computing products. It is built with Next.js, secured with NextAuth (OAuth), and processes payments via Stripe.
+| | Product | What you get | Price |
+|--|---------|--------------|-------|
+| ⚡ | **Quantum Dev Kit** | Hardware + software starter pack — everything to begin building quantum algorithms | $499 |
+| 🚀 | **OS Pro License** | Full BlackRoad OS Pro with priority support and early access to every new build | $299/yr |
+| 🎓 | **Course Bundle** | Complete video series — quantum gates, circuits, algorithms. No PhD needed. | $149 |
 
-### Products
+---
 
-| Product | Description | Price |
-|---------|-------------|-------|
-| BlackRoad Quantum Dev Kit | Complete hardware & software starter pack for quantum algorithm development | $499 |
-| Quantum OS Pro License | Full BlackRoad OS Pro license with priority support and early access | $299/yr |
-| Quantum Computing Course Bundle | Comprehensive video course covering quantum gates, circuits, and algorithms | $149 |
+## 🌐 See it live
+
+The store is live at **[blackroadquantum.shop](https://blackroadquantum.shop)** — no setup needed.
+
+The BlackRoad OS portal is at **[blackroad.io](https://blackroad.io)**.
 
 ---
 
@@ -32,7 +34,7 @@ This repository and all of its contents are the exclusive property of **BlackRoa
 
 | Layer | Technology |
 |-------|-----------|
-| Frontend | [Next.js 14](https://nextjs.org/) (App Router, React 18) |
+| Frontend | [Next.js 16](https://nextjs.org/) (App Router, React 19) |
 | Payments | [Stripe](https://stripe.com/) (Checkout Sessions) |
 | Auth | [NextAuth.js](https://next-auth.js.org/) (GitHub OAuth) |
 | Deploy | [Cloudflare Pages](https://pages.cloudflare.com/) |
@@ -40,45 +42,32 @@ This repository and all of its contents are the exclusive property of **BlackRoa
 
 ---
 
-## Getting Started
+## Running it locally (optional)
 
-### Prerequisites
-
-- Node.js 20+
-- A [Stripe](https://stripe.com) account
-- A GitHub OAuth App (for contributor authentication)
-
-### Setup
+Only needed if you're a contributor making changes.
 
 ```bash
-# 1. Clone the repository
 git clone https://github.com/BlackRoad-OS/blackroadquantum-shop.git
 cd blackroadquantum-shop
-
-# 2. Install dependencies
 npm install
-
-# 3. Configure environment
 cp .env.example .env.local
-# Fill in all values in .env.local
-
-# 4. Run development server
+# Fill in .env.local with your keys
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) to view the store.
+Open [http://localhost:3000](http://localhost:3000).
 
-### Environment Variables
+### Environment variables
 
-See [`.env.example`](.env.example) for the complete list of required variables.
+See [`.env.example`](.env.example) for the full list.
 
-| Variable | Description |
-|----------|-------------|
-| `STRIPE_SECRET_KEY` | Stripe secret key (from Stripe Dashboard) |
+| Variable | What it's for |
+|----------|---------------|
+| `STRIPE_SECRET_KEY` | From your [Stripe Dashboard](https://dashboard.stripe.com/apikeys) |
 | `NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY` | Stripe publishable key |
 | `STRIPE_PRICE_*` | Stripe Price IDs for each product |
 | `NEXTAUTH_SECRET` | Random secret — run `openssl rand -hex 32` |
-| `NEXTAUTH_URL` | Public URL of the deployment |
+| `NEXTAUTH_URL` | Your deployment URL |
 | `GITHUB_CLIENT_ID` | GitHub OAuth App client ID |
 | `GITHUB_CLIENT_SECRET` | GitHub OAuth App client secret |
 | `BLACKROAD_API_KEY` | API key for contributor access to protected endpoints |
@@ -86,65 +75,30 @@ See [`.env.example`](.env.example) for the complete list of required variables.
 
 ---
 
-## API Reference
+## Contributor access
 
-All protected API endpoints require the `x-blackroad-api-key` header.
-
-### `GET /api/health`
-
-Returns service health status. Public — no API key required.
-
-```json
-{ "status": "ok", "service": "blackroadquantum-shop", "timestamp": "..." }
-```
-
-### `POST /api/checkout`
-
-Creates a Stripe Checkout Session.
-
-**Headers:** `x-blackroad-api-key: <key>`
-
-**Body:**
-```json
-{ "priceId": "price_xxx", "quantity": 1 }
-```
-
-**Response:**
-```json
-{ "url": "https://checkout.stripe.com/..." }
-```
-
-### `GET|POST /api/auth/[...nextauth]`
-
-NextAuth OAuth endpoints. Public — handles sign-in via GitHub OAuth.
-
----
-
-## Contributor Access
-
-Access to protected API endpoints and contributor workflows requires a **BlackRoad OS Converter API key**.
+To access protected API endpoints:
 
 1. Sign in via GitHub OAuth at `/api/auth/signin`
-2. Submit a contributor access request to **access@blackroad.io**
-3. Once approved, your GitHub email is added to `ALLOWED_CONTRIBUTOR_EMAILS` and you receive a `BLACKROAD_API_KEY`
-4. Include the key as `x-blackroad-api-key` in all API requests
-
-**Without a valid API key, all protected endpoints return `401 Unauthorized`.**
+2. Email **access@blackroad.io** to request a contributor API key
+3. Once approved, use your key as `x-blackroad-api-key` in API requests
 
 ---
 
-## Deployment
+## API endpoints
 
-The repository is configured for automated deployment to **Cloudflare Pages** on every push to `main`. Secrets must be configured in the GitHub repository settings.
-
-See `.github/workflows/auto-deploy.yml` for the full pipeline.
+| Endpoint | Description |
+|----------|-------------|
+| `GET /api/health` | Health check — no auth needed |
+| `POST /api/checkout` | Creates a Stripe Checkout Session |
+| `GET\|POST /api/auth/[...nextauth]` | GitHub OAuth sign-in |
 
 ---
 
 ## Security
 
-Please report vulnerabilities to **security@blackroad.io** — do NOT open public issues.  
-See [`SECURITY.md`](SECURITY.md) for the full policy.
+Report vulnerabilities to **security@blackroad.io** — not as public issues.  
+See [`SECURITY.md`](SECURITY.md).
 
 ---
 
@@ -152,4 +106,4 @@ See [`SECURITY.md`](SECURITY.md) for the full policy.
 
 **Proprietary — © 2026 BlackRoad OS, Inc. All Rights Reserved.**
 
-This software is not open source. No license is granted to any person or entity to use, copy, modify, merge, publish, distribute, sublicense, or sell copies of this software without express written permission from BlackRoad OS, Inc.
+No license is granted to use, copy, modify, or distribute this software without written permission from BlackRoad OS, Inc.
